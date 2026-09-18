@@ -111,19 +111,6 @@ MAX_REPLANS=3
 
 Optional provider and data API variables are documented in `.env.example`.
 
-### Integrating OpenWeatherMap
-
-1. Create a free account at [OpenWeatherMap](https://openweathermap.org/), open the API keys page, and copy your key.
-2. Copy `.env.example` to `.env`.
-3. Set these values:
-
-```env
-DEMO_MODE=false
-OPENWEATHERMAP_API_KEY=your_key_here
-```
-
-4. Restart the CLI or Panel server so configuration is reloaded.
-
 The Weather Agent calls the OpenWeatherMap geocoding endpoint to resolve the destination, then the five-day forecast endpoint for the requested dates. The adapter converts the forecast into WeekendWise's daily schema with condition, rain chance, temperature, outdoor score, and `source: openweathermap`. A missing key, unavailable forecast date, or network/API error automatically falls back to clearly labelled Demo Mode data and records a warning in the agent trace.
 
 The same pattern is intended for future live adapters: keep keys in `.env`, add a service wrapper under `trip_planner/adapters/`, return normalized WeekendWise records, and preserve a visible Demo Mode fallback.
@@ -174,23 +161,6 @@ For four travelers visiting Vizag on Saturday and Sunday with a `₹10,000` tota
 - Opening-hour and event-conflict checks are currently basic.
 - Route estimates are illustrative in Demo Mode.
 
-## Future Improvements
-
-- Add OpenStreetMap/OSRM route computation.
-- Add live local venue and restaurant adapters.
-- Add stronger opening-hour and event-calendar validation.
-- Persist graph traces for audit and comparison.
-- Add selectable currencies and accommodation as an optional base location.
-
 ## Acknowledgements / Based on
 
 WeekendWise reuses the useful LangGraph, LangChain, Panel, API-wrapper, PDF, and shared-state foundations of the original Voyager repository from which this project was derived. The original repository and its license should be retained and credited according to the upstream GitHub project’s license terms. WeekendWise is a substantial transformation focused on short weekend planning, iterative validation, and bounded replanning.
-
-## Viva Demonstration
-
-1. Start the Panel dashboard in Demo Mode.
-2. Enter Vizag, two dates, four travelers, `₹10,000`, Local taxi, and Food/Beaches/Events.
-3. Click **Plan My Weekend**.
-4. Explain the execution trace: parallel research, initial itinerary, budget warning, validator failure, Master Planner replan, and final validation pass.
-5. Show the per-day itinerary, budget categories, route totals, weather explanation, and structured validator result.
-6. Change `MAX_REPLANS` or use a very small budget to demonstrate bounded failure handling.
